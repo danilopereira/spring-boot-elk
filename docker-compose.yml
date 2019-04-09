@@ -1,0 +1,23 @@
+version: '3'
+services:
+  app:
+    restart: always
+    build: ./
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    ports:
+      - 8080:8080
+    command: mvn clean spring-boot:run
+    links:
+      - elk
+
+  elk:
+    image: sebp/elk
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
